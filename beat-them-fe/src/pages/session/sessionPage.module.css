@@ -1,0 +1,33 @@
+.marginButton {
+    margin: 1rem;
+    font-size: 1.5rem;
+}
+
+.inputSession {
+    padding: 1rem;
+    font-size: 1.5rem;;
+}
+
+.inputUsername {
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.topright {
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+}
+
+.errormsg {
+    color: red;
+}
+
+.visible {
+    display: block;
+    visibility: visible;
+}
+
+.invisible {
+    display: none;
+}
