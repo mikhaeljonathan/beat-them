@@ -78,6 +78,10 @@ io.on('connection', (socket: any) => {
     }
 
     socket.emit('session_found');
+
+    if (capsaSession.isSessionStarted()) {
+      socket.emit('game_started', sessionId);
+    }
   });
 
   socket.on('fetch_players', (sessionId: string) => {
@@ -89,14 +93,17 @@ io.on('connection', (socket: any) => {
   });
 
   socket.on('start_game', (sessionId: string) => {
-    // const capsaSession: CapsaSession | undefined = capsaSessions.get(sessionId);
+    const capsaSession: CapsaSession | undefined = capsaSessions.get(sessionId);
 
-    // if (capsaSession === undefined) throw "Session not found";
+    if (capsaSession === undefined){
+      socket.emit('session_not_found');
+      return;
+    }
     
-    // capsaSession.startGame();
+    capsaSession.startGame();
 
-    // const playerCardMapping = room.playerCardMapping;
-    // const currentPlayer = room.currentPlayer;
+    const playerCardMapping = capsaSession.getPlayerCardMapping();
+    const currentPlayer = capsaSession;
 
     // for (const player of room.players) {
     //   socket.to(usernameSocketMapping[player]).emit('initial cards', playerCardMapping);

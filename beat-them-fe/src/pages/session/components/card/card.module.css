@@ -1,0 +1,65 @@
+.card {
+    float: right;
+    display: grid;
+    place-items: center;
+    background-color: #fff;
+    height: 10rem;
+    border: #000 solid 0.1rem;
+    border-radius: 0.5rem;
+    position: relative;
+    color: #000;
+}
+
+.notPicked:hover {
+    cursor: pointer;
+    transform: translateY(-2rem);
+}
+
+.picked {
+    transform: translateY(-2rem);
+}
+
+.picked:hover{
+    cursor:pointer;
+}
+
+.cardRear {
+    width: 2.5rem;
+}
+
+.cardFront {
+    width: 7rem;
+}
+
+p {
+    font-size: 2rem;
+}
+
+.number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.topLeft {
+    position: absolute;
+    margin: 0.25rem 0.5rem;
+    top: 0;
+    left: 0;
+}
+
+.topMiddle {
+    position: absolute;
+    margin: 0.25rem 0.5rem;
+    top: 0;
+}
+
+.bottomRight {
+    position: absolute;
+    margin: 0.25rem 0.5rem;
+    bottom: 0;
+    right: 0;
+}
+
+.redColor {
+    color: #ff0000;
+}

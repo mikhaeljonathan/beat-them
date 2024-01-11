@@ -10,7 +10,7 @@ function SessionPage() {
     const navigate = useNavigate();
     const { sessionId } = useParams();
 
-    const [isGameStarted, setIsGameStarted] = useState(false);
+    const [isGameStarted, setIsGameStarted] = useState(true);
     const [isSessionFound, setIsSessionFound] = useState(false);
 
     useEffect(() => {
@@ -24,7 +24,8 @@ function SessionPage() {
             setIsSessionFound(true);
         });
 
-        socket.on('game_started', (sessionId: string) => {
+        socket.on('game_started', (returnedSessionId: string) => {
+            if (returnedSessionId !== sessionId) return;
             setIsGameStarted(true);
         });
 
