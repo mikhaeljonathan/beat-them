@@ -23,11 +23,16 @@ function SessionPage() {
         socket.on('session_found', () => {
             setIsSessionFound(true);
         });
+
+        socket.on('game_started', (sessionId: string) => {
+            setIsGameStarted(true);
+        });
+
     }, [socket]);
 
     return (
         <div>
-            {(!isGameStarted && isSessionFound) ? <WaitingRoomSection cb={setIsGameStarted} sessionId={sessionId!} socket={socket}/> : ''}
+            {(!isGameStarted && isSessionFound) ? <WaitingRoomSection sessionId={sessionId!} socket={socket}/> : ''}
             {isGameStarted ? <GameSection /> : ''}
         </div>
     )

@@ -19,27 +19,15 @@ const usernameSocketMapping: Map<string, string> = new Map();
 
 app.use(cors());
 
-// app.get('/', (req: Request, res: Response) => {
-//   res.send('BEAT-THEM!')
-// });
-
 io.on('connection', (socket: any) => {
 
-  socket.on('create_session', (username: string) => {
-    if (username === undefined || username === '' || username === null) {
-      socket.emit('username_required');
-      return;
-    }
-
+  socket.on('create_session', () => {
     const sessionId: string = uuidv4();
     const capsaSession: CapsaSession = new CapsaSession(sessionId);
-    capsaSession.joinGame(new Player(username));
     capsaSessions.set(sessionId, capsaSession);
-
-    usernameSocketMapping.set(username, socket.id);
     
     socket.join(sessionId);
-    console.info(`Session ${sessionId} created by ${username}`);
+    console.info(`Session ${sessionId} created`);
     socket.emit('session_created', sessionId);
   });
 
@@ -48,7 +36,12 @@ io.on('connection', (socket: any) => {
       socket.emit('username_required');
       return;
     }
-      
+
+    if (usernameSocketMapping.has(username)) {
+      socket.emit('username_taken');
+      return;
+    }
+    
     const capsaSession: CapsaSession | undefined = capsaSessions.get(sessionId);
 
     if (capsaSession === undefined) {
@@ -63,8 +56,9 @@ io.on('connection', (socket: any) => {
 
     capsaSession.joinGame(new Player(username));
     socket.join(sessionId);
-    socket.broadcast.emit('session_joined', sessionId, username);
-    socket.to(socket.id).emit('session_joined', sessionId, username);
+    socket.broadcast.emit('session_joined', sessionId);
+    socket.emit('session_joined', sessionId);
+
     usernameSocketMapping.set(username, socket.id);
 
     if (capsaSession.getPlayers().length === 4) {
@@ -110,7 +104,7 @@ io.on('connection', (socket: any) => {
     //     socket.to(usernameSocketMapping[player]).emit('your turn');
     //   }
     // }
-
+    socket.broadcast.emit('game_started', sessionId);
   });
 
   // socket.on('deal card', (username, roomId, cards) => {
